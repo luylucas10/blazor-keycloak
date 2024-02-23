@@ -1,0 +1,38 @@
+﻿@page "/"
+@using System.Text.Json
+@using System.Security.Claims
+@inject AuthenticationStateProvider AuthenticationStateProvider
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+
+Welcome to your new app.
+
+@if (claims.Any())
+{
+    <h2>User Claims:</h2>
+    <ul>
+        @foreach (var claim in claims)
+        {
+            <li>@claim.Type: @claim.Value</li>
+        }
+    </ul>
+}
+
+@code {
+    private IEnumerable<Claim> claims = Enumerable.Empty<Claim>();
+
+    protected override Task OnInitializedAsync() => GetClaimsPrincipalData();
+
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+        if (user.Identity?.IsAuthenticated ?? false)
+        {
+            claims = user.Claims;
+        }
+    }
+}

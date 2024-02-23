@@ -1,0 +1,6 @@
+@KeycloakApi_HostAddress = http://localhost:5276
+
+GET {{KeycloakApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

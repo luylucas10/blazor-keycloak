@@ -1,0 +1,43 @@
+﻿
+@using Microsoft.AspNetCore.Mvc
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.AspNetCore.Authentication.OpenIdConnect
+@using Microsoft.AspNetCore.Authentication
+@inherits LayoutComponentBase
+<AuthorizeView>
+    teste
+</AuthorizeView>
+<div class="page">
+    <div class="sidebar">
+        <NavMenu/>
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <button @onclick="Logout">Sair</button>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code
+{
+    [CascadingParameter] public HttpContext _HttpContext { get; set; }
+    [CascadingParameter] public NavigationManager _NavigationManager { get; set; }
+    public async Task Logout()
+    {
+        await _HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await _HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme);
+        _NavigationManager.NavigateTo("/logout");
+    }
+}
